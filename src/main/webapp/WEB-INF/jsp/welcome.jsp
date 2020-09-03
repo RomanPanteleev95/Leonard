@@ -5,7 +5,7 @@
     <title>JSP</title>
 </head>
 <body>
-<p>${exceptionText}</p>
+<p>Welcome</p>
 <br/>
 </body>
 </html>

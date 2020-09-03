@@ -1,4 +1,4 @@
-package ru.sgu.solution;
+package ru.ssu.solution;
 
 public interface Constants {
 

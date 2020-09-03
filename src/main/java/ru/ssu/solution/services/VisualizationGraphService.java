@@ -1,4 +1,4 @@
-package ru.sgu.solution.services;
+package ru.ssu.solution.services;
 
 import edu.uci.ics.jung.graph.Graph;
 

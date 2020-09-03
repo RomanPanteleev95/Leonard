@@ -1,7 +1,7 @@
-package ru.sgu.solution.services;
+package ru.ssu.solution.services;
 
 import edu.uci.ics.jung.graph.Graph;
-import ru.sgu.solution.entities.Function;
+import ru.ssu.solution.entities.Function;
 
 public interface GraphBuildingService {
 

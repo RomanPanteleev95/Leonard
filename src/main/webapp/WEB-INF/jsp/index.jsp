@@ -38,6 +38,10 @@
             <img src="data:image/png;base64,${graph}"/>
         </c:forEach>
     </div>
+
+    <form action="/auth/logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
 </div>
 </body>
 </html>

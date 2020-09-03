@@ -1,4 +1,4 @@
-package ru.sgu.solution.services.impl;
+package ru.ssu.solution.services.impl;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
@@ -7,8 +7,8 @@ import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer;
-import ru.sgu.solution.services.VisualizationGraphService;
-import ru.sgu.solution.utils.ControllerUtils;
+import ru.ssu.solution.services.VisualizationGraphService;
+import ru.ssu.solution.utils.ControllerUtils;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

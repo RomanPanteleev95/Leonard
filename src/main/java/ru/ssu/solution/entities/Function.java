@@ -1,4 +1,4 @@
-package ru.sgu.solution.entities;
+package ru.ssu.solution.entities;
 
 import java.util.ArrayList;
 import java.util.Arrays;

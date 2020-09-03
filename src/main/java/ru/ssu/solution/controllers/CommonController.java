@@ -1,38 +1,31 @@
-package ru.sgu.solution.controllers;
+package ru.ssu.solution.controllers;
 
 import edu.uci.ics.jung.graph.Graph;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.sgu.solution.entities.Function;
-import ru.sgu.solution.services.GraphBuildingService;
-import ru.sgu.solution.services.VisualizationGraphService;
-import ru.sgu.solution.services.impl.GraphBuildingServiceImpl;
-import ru.sgu.solution.services.impl.VisualizationGraphServiceImpl;
-import ru.sgu.solution.utils.ControllerUtils;
+import ru.ssu.solution.entities.Function;
+import ru.ssu.solution.services.GraphBuildingService;
+import ru.ssu.solution.services.VisualizationGraphService;
+import ru.ssu.solution.services.impl.GraphBuildingServiceImpl;
+import ru.ssu.solution.services.impl.VisualizationGraphServiceImpl;
+import ru.ssu.solution.utils.ControllerUtils;
 
 import java.io.*;
 
-import static ru.sgu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
+import static ru.ssu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
 
 @Controller
-public class GraphController {
+public class CommonController {
 
     private GraphBuildingService graphBuildingService = new GraphBuildingServiceImpl();
     private VisualizationGraphService visualizationGraphService = new VisualizationGraphServiceImpl();
-
-    @GetMapping("/test")
-    public String test() {
-        return "index";
-    }
 
     @PostMapping("/files")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam(required = false, value = "isNeedImage") Boolean isNeedImage, Model model ) {
@@ -55,10 +48,10 @@ public class GraphController {
     }
 
     @GetMapping("/files")
+    @PreAuthorize("hasAuthority('files:read')")
     public String downloadFiles(Model model) throws IOException {
         ControllerUtils с = new ControllerUtils();
         model.addAttribute("files", ControllerUtils.getFilesForDownload());
-//        model.addAttribute("graph", img);
         return "index";
     }
 
@@ -73,6 +66,16 @@ public class GraphController {
 
     }
 
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('users:read')")
+    public String getUsers() {
+        return "users";
+    }
+
+    @GetMapping("/")
+    public String welcome() {
+        return "welcome";
+    }
 
     private void validateTextFile(MultipartFile textFile) throws Exception {
         if (!textFile.getContentType().equals("text/plain")) {

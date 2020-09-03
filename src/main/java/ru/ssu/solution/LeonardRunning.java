@@ -1,4 +1,4 @@
-package ru.sgu.solution;
+package ru.ssu.solution;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

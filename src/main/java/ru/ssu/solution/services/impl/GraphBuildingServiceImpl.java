@@ -1,10 +1,10 @@
-package ru.sgu.solution.services.impl;
+package ru.ssu.solution.services.impl;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.OrderedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
-import ru.sgu.solution.entities.Function;
-import ru.sgu.solution.services.GraphBuildingService;
+import ru.ssu.solution.entities.Function;
+import ru.ssu.solution.services.GraphBuildingService;
 
 public class GraphBuildingServiceImpl implements GraphBuildingService {
     @Override

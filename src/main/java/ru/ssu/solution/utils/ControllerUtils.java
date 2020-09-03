@@ -1,4 +1,4 @@
-package ru.sgu.solution.utils;
+package ru.ssu.solution.utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 
-import static ru.sgu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
+import static ru.ssu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
 
 public class ControllerUtils {
 
