@@ -7,4 +7,6 @@ public interface GraphBuildingService {
 
     public Graph buildGraphFromFunction(Function function);
 
+    public Graph buildGraphFromTextFormat(String graphDescription);
+
 }
