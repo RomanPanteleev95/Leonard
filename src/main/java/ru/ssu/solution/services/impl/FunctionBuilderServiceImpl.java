@@ -1,6 +1,7 @@
 package ru.ssu.solution.services.impl;
 
 import edu.uci.ics.jung.graph.util.EdgeType;
+import ru.ssu.solution.entities.Function;
 import ru.ssu.solution.services.FunctionBuilderService;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 public class FunctionBuilderServiceImpl implements FunctionBuilderService {
 
     @Override
-    public String getFunctionFromTextFormatGraph(String graphDescription) {
+    public Function getFunctionFromTextFormatGraph(String graphDescription) {
         String[] description = graphDescription.split(" ");
         int vertexNumber = Integer.parseInt(description[0]);
         List<String> nodes = new ArrayList<>();
@@ -34,6 +35,6 @@ public class FunctionBuilderServiceImpl implements FunctionBuilderService {
             result += node + ";";
         }
         result = result.substring(0, result.length() - 1) + ")";
-        return result;
+        return new Function(result);
     }
 }

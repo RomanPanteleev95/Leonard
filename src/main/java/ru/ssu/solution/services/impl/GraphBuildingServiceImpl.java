@@ -4,9 +4,17 @@ import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.OrderedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 import ru.ssu.solution.entities.Function;
+import ru.ssu.solution.entities.LeonardGraph;
+import ru.ssu.solution.services.FunctionBuilderService;
 import ru.ssu.solution.services.GraphBuildingService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GraphBuildingServiceImpl implements GraphBuildingService {
+
+    private FunctionBuilderService functionBuilderService = new FunctionBuilderServiceImpl();
+
     @Override
     public Graph<String, String> buildGraphFromFunction(Function function) {
         Graph<String, String> resultGraph = new OrderedSparseMultigraph<>();
@@ -24,7 +32,16 @@ public class GraphBuildingServiceImpl implements GraphBuildingService {
     }
 
     @Override
-    public Graph buildGraphFromTextFormat(String graphDescription) {
+    public LeonardGraph buildLeonardGraphFromTextFormat(String graphDescription) {
+        LeonardGraph leonardGraph = new LeonardGraph();
+        leonardGraph.setVisualizationGraph(getVisualizationGraph(graphDescription));
+        leonardGraph.setGraphFunction(functionBuilderService.getFunctionFromTextFormatGraph(graphDescription));
+//        leonardGraph.setArrayGraph(getArrayGraph(graphDescription));
+//        leonardGraph.setGraphList(graphList(graphDescription));
+        return leonardGraph;
+    }
+
+    private Graph getVisualizationGraph(String graphDescription) {
         Graph<String, String> resultGraph = new OrderedSparseMultigraph<>();
         String[] description = graphDescription.split(" ");
         int vertexNumber = Integer.parseInt(description[0]);
@@ -43,6 +60,47 @@ public class GraphBuildingServiceImpl implements GraphBuildingService {
         }
 
         return resultGraph;
+    }
+
+    private int[][] getArrayGraph(String graphDescription) {
+        String[] description = graphDescription.split(" ");
+        int vertexNumber = Integer.parseInt(description[0]);
+        int[][] graphArray = new int[vertexNumber][vertexNumber];
+
+        for (int i = 0; i < vertexNumber; i++) {
+            for (int j = 0; j < vertexNumber; j++) {
+                graphArray[i][j] = 0;
+            }
+        }
+
+        for (int i = 2; i < description.length; i += 2) {
+            int sourceVertex = Integer.parseInt(description[i]);
+            int targetVertex = Integer.parseInt(description[i + 1]);
+            graphArray[sourceVertex][targetVertex] = 1;
+        }
+
+        return graphArray;
+    }
+
+    private List<List<Integer>> graphList(String graphDescription) {
+        String[] description = graphDescription.split(" ");
+        int vertexNumber = Integer.parseInt(description[0]);
+        List<List<Integer>> graphList = new ArrayList<>();
+        for (int i = 0; i < vertexNumber; i++) {
+            List<Integer> dijVertexes = new ArrayList<>();
+            for (int j = 0; j < vertexNumber; j++) {
+                dijVertexes.add(0);
+            }
+            graphList.add(dijVertexes);
+        }
+
+        for (int i = 2; i < description.length; i += 2) {
+            int sourceVertex = Integer.parseInt(description[i]);
+            int targetVertex = Integer.parseInt(description[i + 1]);
+            graphList.get(sourceVertex).set(targetVertex, 1);
+        }
+
+        return graphList;
     }
 
 }

@@ -1,33 +1,27 @@
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.OrderedSparseMultigraph;
-import edu.uci.ics.jung.graph.util.EdgeType;
-import edu.uci.ics.jung.visualization.VisualizationImageServer;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
-import edu.uci.ics.jung.visualization.renderers.Renderer;
+import ru.ssu.solution.entities.Function;
+import ru.ssu.solution.entities.LeonardGraph;
 import ru.ssu.solution.services.FunctionBuilderService;
 import ru.ssu.solution.services.GraphBuildingService;
+import ru.ssu.solution.services.GraphUtilService;
 import ru.ssu.solution.services.VisualizationGraphService;
 import ru.ssu.solution.services.impl.FunctionBuilderServiceImpl;
 import ru.ssu.solution.services.impl.GraphBuildingServiceImpl;
+import ru.ssu.solution.services.impl.GraphUtilServiceImpl;
 import ru.ssu.solution.services.impl.VisualizationGraphServiceImpl;
 import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
 public class GraphExample {
     public static void main(String[] args) throws IOException {
         GraphBuildingService graphBuildingService = new GraphBuildingServiceImpl();
         VisualizationGraphService visualizationGraphService = new VisualizationGraphServiceImpl();
         FunctionBuilderService functionBuilderService = new FunctionBuilderServiceImpl();
+        GraphUtilService graphUtilService = new GraphUtilServiceImpl();
 
         Scanner systemScan = new Scanner(System.in);
         String graphFileName = systemScan.nextLine();
@@ -36,8 +30,8 @@ public class GraphExample {
         int idx = 1;
         while (scan.hasNext()){
             String g = scan.nextLine();
-            Graph graph = graphBuildingService.buildGraphFromTextFormat(g);
-            String base64img = visualizationGraphService.getGraphImageInBase64(graph);
+            LeonardGraph leonardGraph = graphBuildingService.buildLeonardGraphFromTextFormat(g);
+            String base64img = visualizationGraphService.getGraphImageInBase64(leonardGraph.getVisualizationGraph());
 
             BufferedImage image;
             byte[] imageByte;
@@ -50,12 +44,21 @@ public class GraphExample {
 
             File outputfile = new File("graph" + idx + ".png");
             ImageIO.write(image, "png", outputfile);
-            System.out.println(idx++);
+//            System.out.println(idx++);
+            idx++;
+//            List<List<Integer>> graphList = leonardGraph.getGraphList();
+//            for (int i = 0; i < graphList.size(); i++) {
+//                for (int j = 0; j < graphList.size(); j++) {
+//                    System.out.print(graphList.get(i).get(j) + " ");
+//                }
+//                System.out.println();
+//            }
+            System.out.println(leonardGraph.getGraphFunction().getSourceFunction());
 
-            String function = functionBuilderService.getFunctionFromTextFormatGraph(g);
-            System.out.println(function);
+//            System.out.println();
 
         }
+
 
 
     }

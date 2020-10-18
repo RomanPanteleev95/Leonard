@@ -1,5 +1,7 @@
 package ru.ssu.solution.services;
 
+import ru.ssu.solution.entities.Function;
+
 public interface FunctionBuilderService {
-    String getFunctionFromTextFormatGraph(String graphDescription);
+    Function getFunctionFromTextFormatGraph(String graphDescription);
 }
