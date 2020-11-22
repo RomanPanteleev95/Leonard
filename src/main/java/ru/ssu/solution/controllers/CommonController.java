@@ -51,7 +51,6 @@ public class CommonController {
     }
 
     @GetMapping("/files")
-    @PreAuthorize("hasAuthority('files:read')")
     public String downloadFiles(Model model) throws IOException {
         ControllerUtils с = new ControllerUtils();
         model.addAttribute("files", ControllerUtils.getFilesForDownload());
