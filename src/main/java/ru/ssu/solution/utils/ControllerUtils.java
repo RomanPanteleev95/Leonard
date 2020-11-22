@@ -13,8 +13,8 @@ import static ru.ssu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
 public class ControllerUtils {
 
     public static ArrayList<String> getFilesForDownload() {
-//        return getFileList(DOWNLOAD_FILE_DIRECTORY);
-        return new ArrayList<>();
+        return getFileList(DOWNLOAD_FILE_DIRECTORY);
+//        return new ArrayList<>();
     }
 
     private static ArrayList<String> getFileList(String path) {
