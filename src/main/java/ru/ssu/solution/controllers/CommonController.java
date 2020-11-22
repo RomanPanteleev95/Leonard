@@ -52,7 +52,6 @@ public class CommonController {
 
     @GetMapping("/files")
     public String downloadFiles(Model model) throws IOException {
-        ControllerUtils с = new ControllerUtils();
         model.addAttribute("files", ControllerUtils.getFilesForDownload());
         return "index";
     }
@@ -72,6 +71,11 @@ public class CommonController {
     @PreAuthorize("hasAuthority('users:read')")
     public String getUsers() {
         return "users";
+    }
+
+    @GetMapping("/")
+    public String welcome() {
+        return "redirect:auth/sign_in";
     }
 
     private void validateTextFile(MultipartFile textFile) throws Exception {
