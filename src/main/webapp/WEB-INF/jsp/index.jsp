@@ -26,6 +26,8 @@
 
     <br/>
 
+    <p>Result files</p>
+
     <div class="list-group">
         <c:forEach var="listValue" items="${files}">
             <a href="<c:url value='/download/${listValue}'/>" class="list-group-item list-group-item-action">${listValue}</a>

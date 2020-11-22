@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ssu.solution.entities.Function;
+import ru.ssu.solution.entities.LeonardGraph;
 import ru.ssu.solution.services.GraphBuildingService;
 import ru.ssu.solution.services.VisualizationGraphService;
 import ru.ssu.solution.services.impl.GraphBuildingServiceImpl;
@@ -18,6 +19,8 @@ import ru.ssu.solution.services.impl.VisualizationGraphServiceImpl;
 import ru.ssu.solution.utils.ControllerUtils;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.ssu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
 
@@ -32,10 +35,10 @@ public class CommonController {
         if (!file.isEmpty()) {
             try {
                 validateTextFile(file);
-                Graph<String, String> graph = calculate(file);
+                List<LeonardGraph> graph = calculate(file);
                 model.addAttribute("files", ControllerUtils.getFilesForDownload());
                 if (isNeedImage != null) {
-                    model.addAttribute("graph", visualizationGraphService.getGraphImageInBase64(graph));
+//                    model.addAttribute("graph", visualizationGraphService.getGraphImageInBase64(graph));
                 }
                 return "index";
             } catch (Exception e) {
@@ -72,18 +75,14 @@ public class CommonController {
         return "users";
     }
 
-    @GetMapping("/")
-    public String welcome() {
-        return "welcome";
-    }
-
     private void validateTextFile(MultipartFile textFile) throws Exception {
         if (!textFile.getContentType().equals("text/plain")) {
             throw new Exception("Неверный формат файла");
         }
     }
 
-    private Graph calculate(MultipartFile file) throws IOException {
+    private List<LeonardGraph> calculate(MultipartFile file) throws IOException {
+        List<LeonardGraph> leonardGraphs = new ArrayList<>();
         byte[] bytes = file.getBytes();
         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(DOWNLOAD_FILE_DIRECTORY + file.getOriginalFilename() + "-result.txt")));
         stream.write(bytes);
@@ -91,13 +90,19 @@ public class CommonController {
         File file1 = new File( DOWNLOAD_FILE_DIRECTORY + file.getOriginalFilename() + "-result.txt");
         FileReader reader = new FileReader(file1);
         BufferedReader bufferedReader = new BufferedReader(reader);
-        String functionStr = bufferedReader.readLine();
-        Function function = new Function(functionStr);
-        Graph<String, String> graph = graphBuildingService.buildGraphFromFunction(function);
+
+        StringBuilder functions = new StringBuilder();
+        bufferedReader.lines().forEach(s -> {
+            LeonardGraph leonardGraph = graphBuildingService.buildLeonardGraphFromTextFormat(s);
+            leonardGraphs.add(leonardGraph);
+            functions.append(leonardGraph.getGraphFunction().getSourceFunction()).append("\n");
+
+            System.out.println();
+        });
         FileWriter fileWriter = new FileWriter(file1);
-        fileWriter.write(graph.toString());
+        fileWriter.write(String.valueOf(functions));
         fileWriter.close();
-        return graph;
+        return leonardGraphs;
     }
 
 
