@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -10,23 +11,31 @@
 
 <div class="container">
     <form method="post" enctype="multipart/form-data" action="/files">
-        <div class="form-group">
-            <label for="fileUpload">File to upload:</label>
-             <input required="true" type="file" class="form-control-file" id="fileUpload" name="file">
+<%--        <div class="form-group">--%>
+<%--            <label for="fileUpload">File to upload:</label>--%>
+<%--             <input required="true" type="file" class="form-control-file" id="fileUpload" name="file">--%>
+<%--        </div>--%>
+        <div>
+            Выберете количество вершин у графа:<select name="vertexes">
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
         </div>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="defaultCheck1" name="isNeedImage" value="true"/>
             <label class="form-check-label" for="defaultCheck1">
-                Generate image
+                Сгенерировать рисунки
             </label>
         </div>
-        <input class="btn btn-primary" type="submit" value="Upload"> Press here to upload the file!
+        <input class="btn btn-primary" type="submit" value="Запуск"> Нажмите для построения функции!
     </form>
     <br/>
 
     <br/>
 
-    <p>Result files</p>
+    <p>Файлы с результатом</p>
 
     <div class="list-group">
         <c:forEach var="listValue" items="${files}">

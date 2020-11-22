@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ru.ssu.solution.Constants.Paths.DOWNLOAD_FILE_DIRECTORY;
+import static ru.ssu.solution.Constants.Paths.GRAPHS_DIRECTORY;
 
 @Controller
 public class CommonController {
@@ -31,23 +32,26 @@ public class CommonController {
     private VisualizationGraphService visualizationGraphService = new VisualizationGraphServiceImpl();
 
     @PostMapping("/files")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam(required = false, value = "isNeedImage") Boolean isNeedImage, Model model ) {
-        if (!file.isEmpty()) {
+    public String handleFileUpload(@RequestParam(value = "vertexes") String vertexCnt, @RequestParam(required = false, value = "isNeedImage") Boolean isNeedImage, Model model ) {
             try {
-                validateTextFile(file);
-                List<LeonardGraph> graph = calculate(file);
+                List<LeonardGraph> leonardGraphs = calculate(vertexCnt);
                 model.addAttribute("files", ControllerUtils.getFilesForDownload());
-                if (isNeedImage != null) {
-//                    model.addAttribute("graph", visualizationGraphService.getGraphImageInBase64(graph));
+                if (isNeedImage != null && Integer.parseInt(vertexCnt) < 4) {
+                    List<String> graphsImage = new ArrayList<>();
+                    for (LeonardGraph leonardGraph : leonardGraphs) {
+                        graphsImage.add(visualizationGraphService.getGraphImageInBase64(leonardGraph.getVisualizationGraph(),
+                                leonardGraph.getGraphFunction().getSourceFunction()));
+                    }
+                    model.addAttribute("graph", graphsImage);
+                }
+                if (isNeedImage != null&& Integer.parseInt(vertexCnt) < 4) {
+
                 }
                 return "index";
             } catch (Exception e) {
                 model.addAttribute("exceptionText", "SOME EXCEPTION");
                 return "exception";
             }
-        } else {
-            return "exception";
-        }
     }
 
     @GetMapping("/files")
@@ -84,13 +88,9 @@ public class CommonController {
         }
     }
 
-    private List<LeonardGraph> calculate(MultipartFile file) throws IOException {
+    private List<LeonardGraph> calculate(String vertexCnt) throws IOException {
         List<LeonardGraph> leonardGraphs = new ArrayList<>();
-        byte[] bytes = file.getBytes();
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(DOWNLOAD_FILE_DIRECTORY + file.getOriginalFilename() + "-result.txt")));
-        stream.write(bytes);
-        stream.close();
-        File file1 = new File( DOWNLOAD_FILE_DIRECTORY + file.getOriginalFilename() + "-result.txt");
+        File file1 = new File( GRAPHS_DIRECTORY + "g" + vertexCnt + "dT.txt");
         FileReader reader = new FileReader(file1);
         BufferedReader bufferedReader = new BufferedReader(reader);
 
@@ -102,7 +102,7 @@ public class CommonController {
 
             System.out.println();
         });
-        FileWriter fileWriter = new FileWriter(file1);
+        FileWriter fileWriter = new FileWriter(DOWNLOAD_FILE_DIRECTORY + "functions_for_" + vertexCnt + "_vertexes_graphs.txt");
         fileWriter.write(String.valueOf(functions));
         fileWriter.close();
         return leonardGraphs;

@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface VisualizationGraphService {
 
-    public String getGraphImageInBase64(Graph graph) throws IOException;
+    public String getGraphImageInBase64(Graph graph, String text) throws IOException;
 
 }
